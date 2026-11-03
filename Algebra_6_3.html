@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Module - Section 6.3 Logarithmic Functions</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for TeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        #laser-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); }
+        }
+        .token-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+
+    <!-- Laser Celebration Canvas -->
+    <canvas id="laser-canvas"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl font-bold text-lg shadow-md shadow-blue-600/20">
+                    <i class="fa-solid fa-subscript"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">Algebra Practice Module</h1>
+                    <span class="text-xs text-blue-600 font-semibold">Section 6.3 • Logarithmic Functions</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-100 border border-slate-300 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs font-bold text-slate-700">
+                    <i class="fa-solid fa-list-check text-blue-600"></i>
+                    <span>Score: <strong id="score-counter" class="text-blue-600">0</strong> / 37</span>
+                </div>
+                <button onclick="triggerLaserShow()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt-lightning"></i> Test Laser
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- Student Name & Info Banner -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Section 6.3: Logarithmic Functions</h2>
+                    <p class="text-xs text-slate-500 font-medium">Reference problem statements and values directly on pp. 374–375.</p>
+                </div>
+                <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-extrabold border border-blue-200">37 Assigned Problems</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-first-name">First Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-first-name" placeholder="Enter first name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-last-name">Last Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-last-name" placeholder="Enter last name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Write in Logarithmic Form (#12-22 Even) -->
+        <div class="bg-blue-600 text-white p-4 rounded-2xl font-bold text-sm tracking-wide shadow-md">
+            Part 1: Write Each Exponential Equation in Logarithmic Form (Exercises #12–22 Even)
+        </div>
+
+        <!-- #12 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q1">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 1 (#12)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q1">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(11^2 = 121\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q1" placeholder="e.g. log_11(121) = 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q1')" id="btn-q1" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #12
+                </button>
+            </div>
+            <div id="feedback-q1" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #14 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q2">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 2 (#14)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q2">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(3^5 = 243\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q2" placeholder="e.g. log_3(243) = 5..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q2')" id="btn-q2" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #14
+                </button>
+            </div>
+            <div id="feedback-q2" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #16 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q3">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 3 (#16)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q3">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(6^{-2} = \frac{1}{36}\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q3" placeholder="e.g. log_6(1/36) = -2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q3')" id="btn-q3" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #16
+                </button>
+            </div>
+            <div id="feedback-q3" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #18 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 4 (#18)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q4">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(27^{\frac{1}{3}} = 3\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q4" placeholder="e.g. log_27(3) = 1/3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q4')" id="btn-q4" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #18
+                </button>
+            </div>
+            <div id="feedback-q4" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #20 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q5">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 5 (#20)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q5">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\left(\frac{1}{4}\right)^{-3} = 64\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q5" placeholder="e.g. log_(1/4)(64) = -3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q5')" id="btn-q5" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #20
+                </button>
+            </div>
+            <div id="feedback-q5" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #22 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 6 (#22)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q6">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\left(\frac{1}{3}\right)^1 = \frac{1}{3}\) in logarithmic form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q6" placeholder="e.g. log_(1/3)(1/3) = 1..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q6')" id="btn-q6" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #22
+                </button>
+            </div>
+            <div id="feedback-q6" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Section 2: Write in Exponential Form (#24-34 Even) -->
+        <div class="bg-blue-600 text-white p-4 rounded-2xl font-bold text-sm tracking-wide shadow-md">
+            Part 2: Write Each Logarithmic Equation in Exponential Form (Exercises #24–34 Even)
+        </div>
+
+        <!-- #24 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q7">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 7 (#24)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q7">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\log_6 36 = 2\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q7" placeholder="e.g. 6^2 = 36..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q7')" id="btn-q7" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #24
+                </button>
+            </div>
+            <div id="feedback-q7" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #26 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q8">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 8 (#26)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q8">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\log_{10} 0.001 = -3\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q8" placeholder="e.g. 10^-3 = 0.001..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q8')" id="btn-q8" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #26
+                </button>
+            </div>
+            <div id="feedback-q8" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #28 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q9">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 9 (#28)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q9">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(3 = \log_9 729\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q9" placeholder="e.g. 9^3 = 729..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q9')" id="btn-q9" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #28
+                </button>
+            </div>
+            <div id="feedback-q9" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #30 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q10">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 10 (#30)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q10">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\log_{16} 2 = \frac{1}{4}\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q10" placeholder="e.g. 16^(1/4) = 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q10')" id="btn-q10" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #30
+                </button>
+            </div>
+            <div id="feedback-q10" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #32 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q11">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 11 (#32)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q11">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(-2 = \log_5 \frac{1}{25}\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q11" placeholder="e.g. 5^-2 = 1/25..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q11')" id="btn-q11" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #32
+                </button>
+            </div>
+            <div id="feedback-q11" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #34 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q12">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 12 (#34)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q12">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write \(\log_{121} 11 = \frac{1}{2}\) in exponential form.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q12" placeholder="e.g. 121^(1/2) = 11..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q12')" id="btn-q12" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #34
+                </button>
+            </div>
+            <div id="feedback-q12" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Section 3: Approximate Logarithmic Expressions (#36-42 Even) -->
+        <div class="bg-blue-600 text-white p-4 rounded-2xl font-bold text-sm tracking-wide shadow-md">
+            Part 3: Find the Approximate Value of Each Logarithmic Expression (Exercises #36–42 Even)
+        </div>
+
+        <!-- #36 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q13">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 13 (#36)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q13">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Approximate \(\log_{10} 1026\). Round to 4 decimal places.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q13" placeholder="e.g. 3.0111..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q13')" id="btn-q13" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #36
+                </button>
+            </div>
+            <div id="feedback-q13" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #38 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q14">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 14 (#38)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q14">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Approximate \(\log_{10} 8\). Round to 4 decimal places.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q14" placeholder="e.g. 0.9031..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q14')" id="btn-q14" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #38
+                </button>
+            </div>
+            <div id="feedback-q14" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #40 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q15">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 15 (#40)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q15">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Approximate \(\log_{10} 0.08\). Round to 4 decimal places.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q15" placeholder="e.g. -1.0969..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q15')" id="btn-q15" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #40
+                </button>
+            </div>
+            <div id="feedback-q15" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #42 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q16">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 16 (#42)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q16">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Approximate \(\log_{10} 0.9\). Round to 4 decimal places.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q16" placeholder="e.g. -0.0458..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q16')" id="btn-q16" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #42
+                </button>
+            </div>
+            <div id="feedback-q16" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Section 4: Solve Exponential Equations (#45-55 Odd) -->
+        <div class="bg-blue-600 text-white p-4 rounded-2xl font-bold text-sm tracking-wide shadow-md">
+            Part 4: Solve Each Equation for \(x\) (Exercises #45–55 Odd, Round to Hundredths)
+        </div>
+
+        <!-- #45 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q17">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 17 (#45)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q17">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve \(10^x = 12\) for \(x\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q17" placeholder="e.g. 1.08..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q17')" id="btn-q17" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #45
+                </button>
+            </div>
+            <div id="feedback-q17" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #47 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q18">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 18 (#47)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q18">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve \(10^x = 3588\) for \(x\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q18" placeholder="e.g. 3.55..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q18')" id="btn-q18" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #47
+                </button>
+            </div>
+            <div id="feedback-q18" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #49 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q19">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 19 (#49)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q19">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve \(10^x = 1.89\) for \(x\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q19" placeholder="e.g. 0.28..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q19')" id="btn-q19" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #49
+                </button>
+            </div>
+            <div id="feedback-q19" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #51 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q20">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 20 (#51)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q20">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve \(10^x = 0.035\) for \(x\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q20" placeholder="e.g. -1.46..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q20')" id="btn-q20" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #51
+                </button>
+            </div>
+            <div id="feedback-q20" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- #53 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q21">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 21 (#53)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q21">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve \(10^x = \frac{1}{1085}\) for \(x\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q21" placeholder="e.g. -3.04..." class="flex
