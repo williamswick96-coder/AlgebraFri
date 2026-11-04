@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Module - Section 6.3 Logarithmic Functions</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for TeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        #laser-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); }
+        }
+        .token-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+
+    <!-- Laser Celebration Canvas -->
+    <canvas id="laser-canvas"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl font-bold text-lg shadow-md shadow-blue-600/20">
+                    <i class="fa-solid fa-square-root-variable"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">Algebra Practice Module</h1>
+                    <span class="text-xs text-blue-600 font-semibold">Section 6.3 • Logarithmic Functions</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-100 border border-slate-300 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs font-bold text-slate-700">
+                    <i class="fa-solid fa-list-check text-blue-600"></i>
+                    <span>Score: <strong id="score-counter" class="text-blue-600">0</strong> / 37</span>
+                </div>
+                <button onclick="triggerLaserShow()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt-lightning"></i> Test Laser
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- Student Name & Info Banner -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Section 6.3: Logarithmic Functions</h2>
+                    <p class="text-xs text-slate-500 font-medium">Reference problem statements and expressions on pp. 374–375.</p>
+                </div>
+                <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-extrabold border border-blue-200">37 Assigned Problems</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-first-name">First Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-first-name" placeholder="Enter first name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-last-name">Last Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-last-name" placeholder="Enter last name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 1: Write in Logarithmic Form (#12-22 even) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 font-bold text-blue-900 text-sm">
+            Part I: Write each equation in logarithmic form (Exercises 12–22 even)
+        </div>
+
+        <!-- Problem #12 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q1">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 1 (#12 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q1">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(11^2 = 121\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q1" placeholder="e.g. log_11(121) = 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q1')" id="btn-q1" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #12
+                </button>
+            </div>
+            <div id="feedback-q1" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #14 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q2">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 2 (#14 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q2">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(3^5 = 243\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q2" placeholder="e.g. log_3(243) = 5..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q2')" id="btn-q2" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #14
+                </button>
+            </div>
+            <div id="feedback-q2" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #16 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q3">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 3 (#16 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q3">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(6^{-2} = \frac{1}{36}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q3" placeholder="e.g. log_6(1/36) = -2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q3')" id="btn-q3" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #16
+                </button>
+            </div>
+            <div id="feedback-q3" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #18 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 4 (#18 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q4">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(27^{1/3} = 3\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q4" placeholder="e.g. log_27(3) = 1/3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q4')" id="btn-q4" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #18
+                </button>
+            </div>
+            <div id="feedback-q4" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #20 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q5">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 5 (#20 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q5">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(\left(\frac{1}{4}\right)^{-3} = 64\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q5" placeholder="e.g. log_(1/4)(64) = -3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q5')" id="btn-q5" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #20
+                </button>
+            </div>
+            <div id="feedback-q5" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #22 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 6 (#22 - Logarithmic Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q6">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in logarithmic form: \(\left(\frac{3}{7}\right)^3 = \frac{27}{343}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q6" placeholder="e.g. log_(3/7)(27/343) = 3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q6')" id="btn-q6" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #22
+                </button>
+            </div>
+            <div id="feedback-q6" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Part 2: Write in Exponential Form (#24-34 even) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 font-bold text-blue-900 text-sm">
+            Part II: Write each equation in exponential form (Exercises 24–34 even)
+        </div>
+
+        <!-- Problem #24 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q7">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 7 (#24 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q7">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(\log_6 36 = 2\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q7" placeholder="e.g. 6^2 = 36..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q7')" id="btn-q7" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #24
+                </button>
+            </div>
+            <div id="feedback-q7" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #26 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q8">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 8 (#26 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q8">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(\log_{10} 0.001 = -3\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q8" placeholder="e.g. 10^-3 = 0.001..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q8')" id="btn-q8" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #26
+                </button>
+            </div>
+            <div id="feedback-q8" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #28 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q9">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 9 (#28 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q9">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(3 = \log_9 729\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q9" placeholder="e.g. 9^3 = 729..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q9')" id="btn-q9" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #28
+                </button>
+            </div>
+            <div id="feedback-q9" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #30 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q10">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 10 (#30 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q10">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(\log_3 \frac{1}{243} = -5\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q10" placeholder="e.g. 3^-5 = 1/243..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q10')" id="btn-q10" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #30
+                </button>
+            </div>
+            <div id="feedback-q10" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #32 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q11">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 11 (#32 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q11">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(-2 = \log_5 \frac{1}{25}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q11" placeholder="e.g. 5^-2 = 1/25..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q11')" id="btn-q11" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #32
+                </button>
+            </div>
+            <div id="feedback-q11" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #34 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q12">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 12 (#34 - Exponential Form)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q12">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Write in exponential form: \(\log_{121} 11 = \frac{1}{2}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q12" placeholder="e.g. 121^(1/2) = 11..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q12')" id="btn-q12" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #34
+                </button>
+            </div>
+            <div id="feedback-q12" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Part 3: Approximate Logarithmic Values (#36-42 even) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 font-bold text-blue-900 text-sm">
+            Part III: Find the approximate value of each logarithmic expression (nearest thousandth) (Exercises 36–42 even)
+        </div>
+
+        <!-- Problem #36 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q13">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 13 (#36 - Approximate Logarithms)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q13">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Evaluate \(\log_{10} 1026\). Round to the nearest thousandth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q13" placeholder="e.g. 3.011..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q13')" id="btn-q13" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #36
+                </button>
+            </div>
+            <div id="feedback-q13" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #38 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q14">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 14 (#38 - Approximate Logarithms)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q14">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Evaluate \(\log_{10} 8\). Round to the nearest thousandth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q14" placeholder="e.g. 0.903..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q14')" id="btn-q14" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #38
+                </button>
+            </div>
+            <div id="feedback-q14" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #40 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q15">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 15 (#40 - Approximate Logarithms)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q15">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Evaluate \(\log_{10} 0.08\). Round to the nearest thousandth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q15" placeholder="e.g. -1.097..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q15')" id="btn-q15" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #40
+                </button>
+            </div>
+            <div id="feedback-q15" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #42 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q16">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 16 (#42 - Approximate Logarithms)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q16">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Evaluate \(\log_{10} 0.002\). Round to the nearest thousandth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q16" placeholder="e.g. -2.699..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q16')" id="btn-q16" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #42
+                </button>
+            </div>
+            <div id="feedback-q16" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Part 4: Solve Exponential Equations (#45-55 odd) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 font-bold text-blue-900 text-sm">
+            Part IV: Solve each equation for x (nearest hundredth) (Exercises 45–55 odd)
+        </div>
+
+        <!-- Problem #45 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q17">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 17 (#45 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q17">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = 12\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q17" placeholder="e.g. 1.08..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q17')" id="btn-q17" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #45
+                </button>
+            </div>
+            <div id="feedback-q17" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #47 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q18">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 18 (#47 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q18">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = 3588\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q18" placeholder="e.g. 3.55..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q18')" id="btn-q18" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #47
+                </button>
+            </div>
+            <div id="feedback-q18" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #49 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q19">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 19 (#49 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q19">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = 1.89\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q19" placeholder="e.g. 0.28..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q19')" id="btn-q19" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #49
+                </button>
+            </div>
+            <div id="feedback-q19" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #51 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q20">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 20 (#51 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q20">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = 0.035\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q20" placeholder="e.g. -1.46..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q20')" id="btn-q20" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #51
+                </button>
+            </div>
+            <div id="feedback-q20" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #53 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q21">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 21 (#53 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q21">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = \frac{1}{1085}\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q21" placeholder="e.g. -3.04..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q21')" id="btn-q21" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #53
+                </button>
+            </div>
+            <div id="feedback-q21" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #55 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q22">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 22 (#55 - Solve Exponential Equation)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q22">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Solve for \(x\): \(10^x = \frac{1}{\sqrt{500}}\). Round to the nearest hundredth.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q22" placeholder="e.g. -1.35..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q22')" id="btn-q22" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #55
+                </button>
+            </div>
+            <div id="feedback-q22" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Part 5: Find the value of v in each equation (#57-85 odd) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 font-bold text-blue-900 text-sm">
+            Part V: Find the value of v in each equation (Exercises 57–85 odd)
+        </div>
+
+        <!-- Problem #57 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q23">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 23 (#57 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q23">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_4 64\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q23" placeholder="e.g. 3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q23')" id="btn-q23" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #57
+                </button>
+            </div>
+            <div id="feedback-q23" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #59 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q24">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 24 (#59 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q24">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_{17} 289\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q24" placeholder="e.g. 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q24')" id="btn-q24" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #59
+                </button>
+            </div>
+            <div id="feedback-q24" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #61 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q25">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 25 (#61 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q25">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_7 7\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q25" placeholder="e.g. 1..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q25')" id="btn-q25" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #61
+                </button>
+            </div>
+            <div id="feedback-q25" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #63 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q26">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 26 (#63 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q26">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_{10} 0.01\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q26" placeholder="e.g. -2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q26')" id="btn-q26" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #63
+                </button>
+            </div>
+            <div id="feedback-q26" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #65 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q27">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 27 (#65 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q27">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_{10} \frac{1}{100}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q27" placeholder="e.g. -2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q27')" id="btn-q27" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #65
+                </button>
+            </div>
+            <div id="feedback-q27" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #67 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q28">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 28 (#67 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q28">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(v = \log_5 1\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q28" placeholder="e.g. 0..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q28')" id="btn-q28" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #67
+                </button>
+            </div>
+            <div id="feedback-q28" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #69 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q29">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 29 (#69 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q29">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(2 = \log_7 v\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q29" placeholder="e.g. 49..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q29')" id="btn-q29" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #69
+                </button>
+            </div>
+            <div id="feedback-q29" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #71 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q30">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 30 (#71 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q30">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(1 = \log_3 v\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q30" placeholder="e.g. 3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q30')" id="btn-q30" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #71
+                </button>
+            </div>
+            <div id="feedback-q30" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #73 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q31">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 31 (#73 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q31">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(\frac{1}{3} = \log_8 v\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q31" placeholder="e.g. 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q31')" id="btn-q31" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #73
+                </button>
+            </div>
+            <div id="feedback-q31" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #75 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q32">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 32 (#75 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q32">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(-3 = \log_4 v\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q32" placeholder="e.g. 1/64..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q32')" id="btn-q32" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #75
+                </button>
+            </div>
+            <div id="feedback-q32" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #77 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q33">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 33 (#77 - Find v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q33">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(0 = \log_2 v\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q33" placeholder="e.g. 1..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q33')" id="btn-q33" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #77
+                </button>
+            </div>
+            <div id="feedback-q33" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #79 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q34">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 34 (#79 - Find Base v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q34">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(\log_v 125 = 3\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q34" placeholder="e.g. 5..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q34')" id="btn-q34" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #79
+                </button>
+            </div>
+            <div id="feedback-q34" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #81 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q35">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 35 (#81 - Find Base v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q35">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(\log_v 4 = \frac{1}{3}\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q35" placeholder="e.g. 64..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q35')" id="btn-q35" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #81
+                </button>
+            </div>
+            <div id="feedback-q35" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #83 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q36">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 36 (#83 - Find Base v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q36">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(\log_v \frac{1}{8} = -3\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q36" placeholder="e.g. 2..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q36')" id="btn-q36" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #83
+                </button>
+            </div>
+            <div id="feedback-q36" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #85 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q37">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 37 (#85 - Find Base v)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q37">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find \(v\): \(\log_v 243 = 5\)</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q37" placeholder="e.g. 3..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q37')" id="btn-q37" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #85
+                </button>
+            </div>
+            <div id="feedback-q37" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Finish Button -->
+        <div class="py-6 flex justify-center">
+            <button onclick="generateCompletionModal()" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl text-base shadow-xl shadow-blue-600/30 transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-award"></i> Submit Completed Module & View Grade Token
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Modal Pop-Up Grade Token View -->
+    <div id="completion-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 text-center space-y-5 transform transition-all">
+            
+            <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-black text-slate-900">Module Completed!</h3>
+                <p id="modal-student-name" class="text-sm font-semibold text-blue-600">Student: Anonymous</p>
+                <span id="modal-score-badge" class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold mt-2">
+                    Score: 0 / 37 (0%)
+                </span>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left space-y-2">
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Official Grade Verification Token</label>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-slate-300 font-mono text-xs font-bold text-slate-800 break-all select-all">
+                    <span id="token-display">MATH-GRADE::...</span>
+                </div>
+                <button onclick="copyTokenToClipboard()" id="copy-token-btn" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copy Token to Clipboard
+                </button>
+            </div>
+
+            <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-100 text-left space-y-2 text-xs text-slate-700">
+                <h4 class="font-extrabold text-blue-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i> Instructions to Submit to Dr. Swick via Jupiter:
+                </h4>
+                <ol class="list-decimal list-inside space-y-1 font-medium text-slate-600">
+                    <li>Click <strong>"Copy Token to Clipboard"</strong> above.</li>
+                    <li>Log into your <strong>JupiterEd</strong> account.</li>
+                    <li>Open your Math class assignment (or send a direct Message to Dr. Swick).</li>
+                    <li>Paste the token string into the comment/message body and click <strong>Turn In / Send</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeCompletionModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Script -->
+    <script>
+        const canvas = document.getElementById('laser-canvas');
+        const ctx = canvas.getContext('2d');
+        let animId = null;
+        let moduleStartTime = Date.now();
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let audioCtx = null;
+        function playLaserSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(1600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.12);
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
+        }
+
+        function triggerLaserShow() {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const colors = ['#2563eb', '#3b82f6', '#06b6d4', '#10b981', '#a855f7', '#f43f5e'];
+            let count = 0;
+
+            const interval = setInterval(() => {
+                playLaserSound();
+                if (count > 25) {
+                    clearInterval(interval);
+                    setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 500);
+                    return;
+                }
+
+                ctx.save();
+                ctx.strokeStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.lineWidth = Math.random() * 8 + 3;
+                ctx.shadowColor = ctx.strokeStyle;
+                ctx.shadowBlur = 25;
+
+                ctx.beginPath();
+                if (Math.random() > 0.5) {
+                    ctx.moveTo(Math.random() * canvas.width, 0);
+                    ctx.lineTo(Math.random() * canvas.width, canvas.height);
+                } else {
+                    ctx.moveTo(0, Math.random() * canvas.height);
+                    ctx.lineTo(canvas.width, Math.random() * canvas.height);
+                }
+                ctx.stroke();
+                ctx.restore();
+
+                count++;
+            }, 90);
+        }
+
+        // State Tracking & Worked Solutions
+        const qState = {
+            q1: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Convert b^y = x into log_b(x) = y.", worked: "<strong>Solution:</strong> \\(\\log_{11}(121) = 2\\)" },
+            q2: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Convert b^y = x into log_b(x) = y.", worked: "<strong>Solution:</strong> \\(\\log_3(243) = 5\\)" },
+            q3: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Convert b^y = x into log_b(x) = y.", worked: "<strong>Solution:</strong> \\(\\log_6\\left(\\frac{1}{36}\\right) = -2\\)" },
+            q4: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Convert b^y = x into log_b(x) = y.", worked: "<strong>Solution:</strong> \\(\\log_{27}(3) = \\frac{1}{3}\\)" },
+            q5: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 1/4.", worked: "<strong>Solution:</strong> \\(\\log_{1/4}(64) = -3\\)" },
+            q6: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 3/7.", worked: "<strong>Solution:</strong> \\(\\log_{3/7}\\left(\\frac{27}{343}\\right) = 3\\)" },
+            
+            q7: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Convert log_b(x) = y into b^y = x.", worked: "<strong>Solution:</strong> \\(6^2 = 36\\)" },
+            q8: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 10, exponent is -3.", worked: "<strong>Solution:</strong> \\(10^{-3} = 0.001\\)" },
+            q9: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 9, exponent is 3.", worked: "<strong>Solution:</strong> \\(9^3 = 729\\)" },
+            q10: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 3, exponent is -5.", worked: "<strong>Solution:</strong> \\(3^{-5} = \\frac{1}{243}\\)" },
+            q11: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 5, exponent is -2.", worked: "<strong>Solution:</strong> \\(5^{-2} = \\frac{1}{25}\\)" },
+            q12: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Base is 121, exponent is 1/2.", worked: "<strong>Solution:</strong> \\(121^{1/2} = 11\\)" },
+            
+            q13: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Use log key on calculator for log_10.", worked: "<strong>Solution:</strong> \\(\\log_{10}(1026) \\approx 3.011\\)" },
+            q14: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Use log key on calculator for log_10.", worked: "<strong>Solution:</strong> \\(\\log_{10}(8) \\approx 0.903\\)" },
+            q15: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Common log of a decimal less than 1 is negative.", worked: "<strong>Solution:</strong> \\(\\log_{10}(0.08) \\approx -1.097\\)" },
+            q16: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Common log of a decimal less than 1 is negative.", worked: "<strong>Solution:</strong> \\(\\log_{10}(0.002) \\approx -2.699\\)" },
+            
+            q17: { attemptsLeft: 2, isCorrect: false, hint: "Hint: Take log_10 of both sides: x = log_10(12).", worked: "<strong>Solution:</strong> \\(x = \\log_{10}(12) \\approx 1.08\\)" },
+            q18: { attemptsLeft: 2, isCorrect: false, hint: "Hint: x = log_10(3588).", worked: "<strong>Solution:</strong> \\(x = \\log_{10}(3588) \\approx 3.55\\)" },
+            q19: { attemptsLeft: 2, isCorrect: false, hint: "Hint: x = log_10(1.89).", worked: "<strong>Solution:</strong> \\(x = \\log_{10}(1.89) \\approx 0.28\\)" },
+            q20: { attemptsLeft: 2, isCorrect: false, hint: "Hint: x = log_10(0.035).", worked: "<strong>Solution:</strong> \\(x = \\log_{10}(0.035) \\approx -1.46\\)" },
+            q21: { attemptsLeft: 2, isCorrect: false, hint: "Hint: x = log_10(1/1085) = -log_10(1085).", worked: "<strong>Solution:</strong> \\(x = \\log_{10}\\left(\\frac{1}{1085}\\right) \\approx -3.04\\)" },
+            q22: { attemptsLeft: 2, isCorrect: false, hint: "Hint: x = log_10(1/sqrt(500)) = -0.5 log_10(500).", worked: "<strong>Solution:</strong> \\(x = -0.5 \\log_{10}(500) \\approx -1.35\\)" },
+            
+            q23: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 4^v = 64.", worked: "<strong>Solution:</strong> \\(4^3 = 64 \\implies v = 3\\)" },
+            q24: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 17^v = 289.", worked: "<strong>Solution:</strong> \\(17^2 = 289 \\implies v = 2\\)" },
+            q25: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 7^v = 7.", worked: "<strong>Solution:</strong> \\(7^1 = 7 \\implies v = 1\\)" },
+            q26: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 10^v = 0.01 = 10^-2.", worked: "<strong>Solution:</strong> \\(10^{-2} = 0.01 \\implies v = -2\\)" },
+            q27: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 10^v = 1/100 = 10^-2.", worked: "<strong>Solution:</strong> \\(10^{-2} = \\frac{1}{100} \\implies v = -2\\)" },
+            q28: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 5^v = 1.", worked: "<strong>Solution:</strong> \\(5^0 = 1 \\implies v = 0\\)" },
+            q29: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 7^2 = v.", worked: "<strong>Solution:</strong> \\(v = 7^2 = 49\\)" },
+            q30: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 3^1 = v.", worked: "<strong>Solution:</strong> \\(v = 3^1 = 3\\)" },
+            q31: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 8^(1/3) = v.", worked: "<strong>Solution:</strong> \\(v = \\sqrt[3]{8} = 2\\)" },
+            q32: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 4^-3 = v.", worked: "<strong>Solution:</strong> \\(v = 4^{-3} = \\frac{1}{64}\\)" },
+            q33: { attemptsLeft: 2, isCorrect: false, hint: "Hint: 2^0 = v.", worked: "<strong>Solution:</strong> \\(v = 2^0 = 1\\)" },
+            q34: { attemptsLeft: 2, isCorrect: false, hint: "Hint: v^3 = 125.", worked: "<strong>Solution:</strong> \\(v^3 = 125 \\implies v = \\sqrt[3]{125} = 5\\)" },
+            q35: { attemptsLeft: 2, isCorrect: false, hint: "Hint: v^(1/3) = 4.", worked: "<strong>Solution:</strong> \\(v = 4^3 = 64\\)" },
+            q36: { attemptsLeft: 2, isCorrect: false, hint: "Hint: v^-3 = 1/8.", worked: "<strong>Solution:</strong> \\(v^{-3} = 2^{-3} \\implies v = 2\\)" },
+            q37: { attemptsLeft: 2, isCorrect: false, hint: "Hint: v^5 = 243.", worked: "<strong>Solution:</strong> \\(v^5 = 243 \\implies v = \\sqrt[5]{243} = 3\\)" }
+        };
+
+        let correctCount = 0;
+
+        function updateScore() {
+            correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            document.getElementById('score-counter').textContent = correctCount;
+        }
+
+        function cleanStr(s) {
+            return s.toLowerCase().replace(/\s+/g, '');
+        }
+
+        function checkQuestion(qId) {
+            const q = qState[qId];
+            if (q.attemptsLeft <= 0 || q.isCorrect) return;
+
+            const feedbackEl = document.getElementById(`feedback-${qId}`);
+            const statusEl = document.getElementById(`status-${qId}`);
+            const btnEl = document.getElementById(`btn-${qId}`);
+            const val = cleanStr(document.getElementById(`input-${qId}`).value);
+
+            q.attemptsLeft--;
+            let isUserCorrect = false;
+
+            // Pattern evaluation logic
+            switch (qId) {
+                case 'q1': if (val.includes("log_11(121)=2") || val.includes("log11(121)=2")) isUserCorrect = true; break;
+                case 'q2': if (val.includes("log_3(243)=5") || val.includes("log3(243)=5")) isUserCorrect = true; break;
+                case 'q3': if (val.includes("log_6(1/36)=-2") || val.includes("log6(1/36)=-2")) isUserCorrect = true; break;
+                case 'q4': if (val.includes("log_27(3)=1/3") || val.includes("log27(3)=1/3")) isUserCorrect = true; break;
+                case 'q5': if (val.includes("log") && val.includes("64") && val.includes("-3")) isUserCorrect = true; break;
+                case 'q6': if (val.includes("log") && val.includes("27/343") && val.includes("3")) isUserCorrect = true; break;
+                
+                case 'q7': if (val.includes("6^2=36")) isUserCorrect = true; break;
+                case 'q8': if (val.includes("10^-3=0.001") || val.includes("10^-3=1/1000")) isUserCorrect = true; break;
+                case 'q9': if (val.includes("9^3=729")) isUserCorrect = true; break;
+                case 'q10': if (val.includes("3^-5=1/243")) isUserCorrect = true; break;
+                case 'q11': if (val.includes("5^-2=1/25")) isUserCorrect = true; break;
+                case 'q12': if (val.includes("121^(1/2)=11") || val.includes("121^0.5=11")) isUserCorrect = true; break;
+                
+                case 'q13': if (val.includes("3.011")) isUserCorrect = true; break;
+                case 'q14': if (val.includes("0.903")) isUserCorrect = true; break;
+                case 'q15': if (val.includes("-1.097")) isUserCorrect = true; break;
+                case 'q16': if (val.includes("-2.699")) isUserCorrect = true; break;
+                
+                case 'q17': if (val.includes("1.08")) isUserCorrect = true; break;
+                case 'q18': if (val.includes("3.55")) isUserCorrect = true; break;
+                case 'q19': if (val.includes("0.28")) isUserCorrect = true; break;
+                case 'q20': if (val.includes("-1.46")) isUserCorrect = true; break;
+                case 'q21': if (val.includes("-3.04")) isUserCorrect = true; break;
+                case 'q22': if (val.includes("-1.35")) isUserCorrect = true; break;
+                
+                case 'q23': if (val.includes("3")) isUserCorrect = true; break;
+                case 'q24': if (val.includes("2")) isUserCorrect = true; break;
+                case 'q25': if (val.includes("1")) isUserCorrect = true; break;
+                case 'q26': if (val.includes("-2")) isUserCorrect = true; break;
+                case 'q27': if (val.includes("-2")) isUserCorrect = true; break;
+                case 'q28': if (val.includes("0")) isUserCorrect = true; break;
+                case 'q29': if (val.includes("49")) isUserCorrect = true; break;
+                case 'q30': if (val.includes("3")) isUserCorrect = true; break;
+                case 'q31': if (val.includes("2")) isUserCorrect = true; break;
+                case 'q32': if (val.includes("1/64") || val.includes("0.015625")) isUserCorrect = true; break;
+                case 'q33': if (val.includes("1")) isUserCorrect = true; break;
+                case 'q34': if (val.includes("5")) isUserCorrect = true; break;
+                case 'q35': if (val.includes("64")) isUserCorrect = true; break;
+                case 'q36': if (val.includes("2")) isUserCorrect = true; break;
+                case 'q37': if (val.includes("3")) isUserCorrect = true; break;
+            }
+
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+
+            if (isUserCorrect) {
+                q.isCorrect = true;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> Correct! Great job.`;
+                statusEl.textContent = "Status: Correct";
+                btnEl.disabled = true;
+                btnEl.className = "px-5 py-2.5 bg-slate-100 text-emerald-700 font-bold text-xs rounded-xl cursor-not-allowed border border-emerald-200";
+                updateScore();
+            } else {
+                if (q.attemptsLeft > 0) {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Incorrect. You have 1 attempt remaining.<br>${q.hint}`;
+                    statusEl.textContent = "Attempts left: 1";
+                } else {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Incorrect (0 attempts left).<br>${q.worked}`;
+                    statusEl.textContent = "Status: Out of attempts";
+                    btnEl.disabled = true;
+                    btnEl.className = "px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border border-slate-200";
+                    if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+                }
+            }
+        }
+
+        function generateCompletionModal() {
+            const firstName = document.getElementById('student-first-name').value.trim() || "Anonymous";
+            const lastName = document.getElementById('student-last-name').value.trim() || "Student";
+            const fullName = `${firstName} ${lastName}`;
+
+            updateScore();
+            triggerLaserShow();
+
+            const durationSec = Math.round((Date.now() - moduleStartTime) / 1000);
+            
+            let qBreakdown = [];
+            Object.keys(qState).forEach((key, index) => {
+                const q = qState[key];
+                const statusChar = q.isCorrect ? 'S' : 'F';
+                const atts = 2 - q.attemptsLeft;
+                qBreakdown.push(`Q${index+1}:${statusChar}:${atts}:30s`);
+            });
+
+            const payloadStr = `${lastName}, ${firstName}|${correctCount}/37|${durationSec}s|${qBreakdown.join(';')}`;
+            const b64Token = btoa(payloadStr);
+
+            const finalToken = `MATH-GRADE::${b64Token}`;
+
+            document.getElementById('modal-student-name').textContent = `Student: ${fullName}`;
+            document.getElementById('modal-score-badge').textContent = `Score: ${correctCount} / 37 (${Math.round((correctCount/37)*100)}%)`;
+            document.getElementById('token-display').textContent = finalToken;
+
+            document.getElementById('completion-modal').classList.remove('hidden');
+        }
+
+        function copyTokenToClipboard() {
+            const tokenText = document.getElementById('token-display').textContent;
+            navigator.clipboard.writeText(tokenText).then(() => {
+                const btn = document.getElementById('copy-token-btn');
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Token Copied!`;
+                btn.className = "w-full py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2";
+                setTimeout(() => {
+                    btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copy Token to Clipboard`;
+                    btn.className = "w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2";
+                }, 2000);
+            });
+        }
+
+        function closeCompletionModal() {
+            document.getElementById('completion-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
